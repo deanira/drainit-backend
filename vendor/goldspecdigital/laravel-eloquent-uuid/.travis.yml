@@ -9,8 +9,9 @@ language: php
 
 # The versions of PHP to run builds against.
 php:
-  - "7.2"
   - "7.3"
+  - "7.4"
+  - "8.0"
 
 # Cache the vendor directory for quicker builds.
 cache:
@@ -24,5 +25,4 @@ install:
 
 # Run the code style and unit tests.
 script:
-  - composer test:style
-  - composer test:unit
+  - composer test

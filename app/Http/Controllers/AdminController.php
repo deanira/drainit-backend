@@ -56,6 +56,23 @@ class AdminController extends Controller
 
         return response()->json(['message'=>'log in successfully!','user'=>$user,'access_token'=>$accessToken,'status_code'=>200],200)->setStatusCode(200);
     }
+    public function reset_password(request $request){
+      $validated = $request->validate([
+        'newpassword'=> 'required|confirmed',
+        'oldpassword' => 'required'
+      ]);
+      $id = auth()->user()->id;
+
+      $data = Admin::find($id);
+      if(!Hash::check( $validated['oldpassword'],$data->password)){
+          return response(['message'=>'password salah','status_code'=>401],401);
+      }else{
+        $data->password = Hash::make($request->newpassword);
+        $data->save();
+        return response()->json(["message" => "Password Updated Successfully!",'status_code'=>200],200);
+      }
+
+    }
     public function update(request $request){
         $validateData = $request->validate([
             'nama' => 'required|max:55',
@@ -87,7 +104,7 @@ class AdminController extends Controller
     }
 
     public function logoutApi()
-    { 
+    {
         $data = DB::table('oauth_access_tokens')->where('user_id', auth()->user()->id);
         if($data){
             $data->delete();

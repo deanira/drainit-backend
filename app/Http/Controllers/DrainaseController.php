@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Drainase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\CustomHelpper;
 
 class DrainaseController extends Controller
 {
@@ -43,13 +44,30 @@ class DrainaseController extends Controller
             'kondisi' => 'required',
             'akhir_pembuangan' => 'required',
             'arah_alir' => 'required',
-            'foto' => 'required',
+            'foto'=> 'nullable',
             'tipe_drainase' => 'required',
             'geometry' => 'required|JSON'
         ]);
 
+
+
         $validated['id_admin'] = auth()->user()->id;
         $validated['geometry'] = DB::Raw("ST_GeomFromGeoJSON('".$request->geometry."')");
+
+        if(is_null($request->foto)){
+            $validated['foto'] = 'defaultmasyarakat.png';
+        }else{
+          $fileUploadHelper = new CustomHelpper();
+
+          $encoded_img = $request->foto;
+          $decoded = base64_decode($encoded_img);
+          $mime_type = finfo_buffer(finfo_open(), $decoded, FILEINFO_MIME_TYPE);
+          $extension = $fileUploadHelper->mime2ext($mime_type);
+          $file = uniqid() .'.'. $extension;
+          $file_dir = storage_path('app/public/images/'). $file;
+          file_put_contents($file_dir, $decoded);
+          $validated['foto'] = $file;
+        }
 
         $data = Drainase::create($validated);
 
@@ -68,7 +86,7 @@ class DrainaseController extends Controller
             'kondisi' => 'required',
             'akhir_pembuangan' => 'required',
             'arah_alir' => 'required',
-            'foto' => 'required',
+            'foto'=> 'nullable',
             'tipe_drainase' => 'required',
             'geometry' => 'required|JSON'
         ]);
@@ -83,9 +101,22 @@ class DrainaseController extends Controller
         $data->kondisi = $request->kondisi;
         $data->akhir_pembuangan = $request->akhir_pembuangan;
         $data->arah_alir = $request->arah_alir;
-        $data->foto = $request->foto;
         $data->tipe_drainase = $request->tipe_drainase;
         $data->geometry = DB::Raw("ST_GeomFromGeoJSON('".$request->geometry."')");
+
+        if(!is_null($request->foto)){
+          $fileUploadHelper = new CustomHelpper();
+
+          $encoded_img = $request->foto;
+          $decoded = base64_decode($encoded_img);
+          $mime_type = finfo_buffer(finfo_open(), $decoded, FILEINFO_MIME_TYPE);
+          $extension = $fileUploadHelper->mime2ext($mime_type);
+          $file = uniqid() .'.'. $extension;
+          $file_dir = storage_path('app/public/images/'). $file;
+          file_put_contents($file_dir, $decoded);
+          $data->foto = $file;
+        }
+
         $data->save();
 
         $data->geometry = json_decode($request->geometry);
@@ -103,5 +134,6 @@ class DrainaseController extends Controller
 
         return response()->json(['status_code'=>204],204);
     }
+
 
 }

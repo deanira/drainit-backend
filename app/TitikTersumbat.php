@@ -5,10 +5,10 @@ namespace App;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Model;
 
 
-class TitikTersumbat extends Model
+class TitikRusak extends Model
 {
     protected $fillable = [
-        'id_admin', 'geometry', 'nama_jalan', 'foto','keterangan'
+        'id_admin', 'geometry', 'nama_jalan', 'foto','keterangan', 'status'
     ];
     protected $spatialFields = [
         'geometry'

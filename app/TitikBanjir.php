@@ -8,7 +8,7 @@ class TitikBanjir extends Model
 {
 
     protected $fillable = [
-        'id_admin', 'geometry', 'nama_jalan', 'kondisi_kerusakan', 'foto','keterangan'
+        'id_admin', 'geometry', 'nama_jalan', 'kondisi_kerusakan', 'foto','keterangan', 'status'
     ];
     protected $spatialFields = [
         'geometry'

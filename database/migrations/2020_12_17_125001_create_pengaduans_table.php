@@ -18,21 +18,20 @@ class CreatePengaduansTable extends Migration
             $table->uuid('id_masyarakat');
             $table->uuid('id_admin')->nullable();
             $table->uuid('id_petugas')->nullable();
-            $table->string('nama_jalan',50);
+            $table->tinyText('nama_jalan');
             $table->geometry('geometry');
             $table->string('foto');
-            $table->string('tipe_pengaduan',20);
+            $table->string('tipe_pengaduan', 20);
             $table->text('deskripsi_pengaduan');
-            $table->string('status_pengaduan',50);
+            $table->string('status_pengaduan', 50);
             $table->text('laporan_petugas')->nullable();
             $table->text('feedback_masyarakat')->nullable();
             $table->timestamps();
         });
-        Schema::table('pengaduans', function($table){
+        Schema::table('pengaduans', function ($table) {
             $table->foreign('id_masyarakat')->references('id')->on('masyarakats')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_admin')->references('id')->on('admins')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_petugas')->references('id')->on('petugas')->onUpdate('cascade')->onDelete('cascade');
-
         });
     }
 

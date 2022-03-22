@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\TitikBanjir;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\CustomHelpper;
 
 class TitikBanjirController extends Controller
 {
@@ -16,6 +17,7 @@ class TitikBanjirController extends Controller
             'kondisi_kerusakan',
             'foto',
             'keterangan',
+            'status',
             DB::Raw('ST_AsGeoJSON(geometry) as geometry')
         )->get();
     }
@@ -28,6 +30,7 @@ class TitikBanjirController extends Controller
             'kondisi_kerusakan',
             'foto',
             'keterangan',
+            'status',
             DB::Raw('ST_AsGeoJSON(geometry) as geometry')
         )->where('id',$id)->first();;
     }
@@ -36,23 +39,30 @@ class TitikBanjirController extends Controller
         $validated = $request->validate([
             'nama_jalan' => 'required',
             'geometry' => 'required',
-            'foto'=> 'nullable|image:jpeg,png,jpg,gif,svg|max:2048',
+            'foto'=> 'nullable',
             'keterangan' => 'nullable',
             'kondisi_kerusakan' => 'required',
+            'status'=> 'nullable',
         ]);
 
         $validated['id_admin'] = auth()->user()->id;
         $validated['geometry'] = DB::Raw("ST_GeomFromGeoJSON('".$request->geometry."')");
-        
+
         if(is_null($request->foto)){
             $validated['foto'] = 'defaultbanjir.png';
         }else{
-            $uploadFolder = 'images';
-            $image = $request->file('foto');
-            $image_uploaded_path = $image->store($uploadFolder, 'public');
-            $validated['foto'] = basename($image_uploaded_path);
+          $fileUploadHelper = new CustomHelpper();
+
+          $encoded_img = $request->foto;
+          $decoded = base64_decode($encoded_img);
+          $mime_type = finfo_buffer(finfo_open(), $decoded, FILEINFO_MIME_TYPE);
+          $extension = $fileUploadHelper->mime2ext($mime_type);
+          $file = uniqid() .'.'. $extension;
+          $file_dir = storage_path('app/public/images/'). $file;
+          file_put_contents($file_dir, $decoded);
+          $validated['foto'] = $file;
         }
-        
+
 
         $data = TitikBanjir::create($validated);
 
@@ -65,9 +75,10 @@ class TitikBanjirController extends Controller
         $validated = $request->validate([
             'nama_jalan' => 'required',
             'geometry' => 'required',
-            'foto'=> 'nullable|image:jpeg,png,jpg,gif,svg|max:2048',
+            'foto'=> 'nullable',
             'keterangan' => 'nullable',
             'kondisi_kerusakan' => 'required',
+            'status'=> 'nullable',
         ]);
 
         $data = TitikBanjir::find($id);
@@ -77,10 +88,16 @@ class TitikBanjirController extends Controller
         $data->kondisi_kerusakan = $request->kondisi_kerusakan;
         $data->keterangan = $request->keterangan;
         if(!is_null($request->foto)){
-            $uploadFolder = 'images';
-            $image = $request->file('foto');
-            $image_uploaded_path = $image->store($uploadFolder, 'public');
-            $data->foto = basename($image_uploaded_path);
+          $fileUploadHelper = new CustomHelpper();
+
+          $encoded_img = $request->foto;
+          $decoded = base64_decode($encoded_img);
+          $mime_type = finfo_buffer(finfo_open(), $decoded, FILEINFO_MIME_TYPE);
+          $extension = $fileUploadHelper->mime2ext($mime_type);
+          $file = uniqid() .'.'. $extension;
+          $file_dir = storage_path('app/public/images/'). $file;
+          file_put_contents($file_dir, $decoded);
+          $data->foto = $file;
         }
         $data->save();
 

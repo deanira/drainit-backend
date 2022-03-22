@@ -17,13 +17,14 @@ class CreateTitikBanjirsTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('id_admin');
             $table->geometry('geometry');
-            $table->string('nama_jalan',50);
+            $table->string('nama_jalan', 50);
             $table->text('kondisi_kerusakan');
             $table->text('keterangan')->nullable();
             $table->string('foto');
+            $table->string('status', 25);
             $table->timestamps();
         });
-        Schema::table('titik_banjirs', function($table){
+        Schema::table('titik_banjirs', function ($table) {
             $table->foreign('id_admin')->references('id')->on('admins')->onUpdate('cascade')->onDelete('cascade');
         });
     }
