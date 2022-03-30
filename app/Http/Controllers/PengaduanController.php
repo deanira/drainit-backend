@@ -25,7 +25,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -64,7 +63,7 @@ class PengaduanController extends Controller
 
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->orderBy('created_at','desc')->get();
   }
 
   public function show($id)
@@ -82,7 +81,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -135,7 +133,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -173,7 +170,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -210,7 +206,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
   }
 
   public function create(request $request)
@@ -288,7 +284,7 @@ class PengaduanController extends Controller
     if ($validator->fails()) {
       return response(['errors' => $validator->errors()->all()], 422);
     }
-    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'laporan_petugas', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
+    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
 
     $data->id_admin = auth()->user()->id;
     $data->status_pengaduan = $request->status_pengaduan;
@@ -306,7 +302,7 @@ class PengaduanController extends Controller
     if ($validator->fails()) {
       return response(['errors' => $validator->errors()->all()], 422);
     }
-    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'laporan_petugas', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
+    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
     $data->id_petugas = auth()->user()->id;
     if (is_null($request->status_pengaduan)) {
       $data->status_pengaduan = "Proses Petugas";
@@ -328,7 +324,7 @@ class PengaduanController extends Controller
     if ($validator->fails()) {
       return response(['errors' => $validator->errors()->all()], 422);
     }
-    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'laporan_petugas', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
+    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
     if ($idMasyarakat == $data->id_masyarakat) {
       if ($data->status_pengaduan === "DONE") {
         $data->feedback_masyarakat = $request->feedback_masyarakat;
@@ -350,7 +346,7 @@ class PengaduanController extends Controller
     if ($validator->fails()) {
       return response(['errors' => $validator->errors()->all()], 422);
     }
-    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'id_petugas as nama_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'laporan_petugas', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
+    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'id_petugas as nama_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
     $data->status_pengaduan = "ON_PROGRESS";
     $data->id_petugas = $request['id_petugas'];
     $data->save();
@@ -397,7 +393,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -444,7 +439,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->orderBy('created_at','desc')->get();
   }
 
   public function get_by_petugas_sortedup()
@@ -463,7 +458,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -510,7 +504,7 @@ class PengaduanController extends Controller
       }
     } while ($swapped);
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
   }
 
   public function get_by_petugas_sorteddown()
@@ -529,7 +523,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -576,7 +569,7 @@ class PengaduanController extends Controller
       }
     } while ($swapped);
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
   }
 
   public function get_not_assign()
@@ -594,7 +587,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -632,7 +624,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_petugas')->whereNotNull('id_admin')->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_petugas')->whereNotNull('id_admin')->orderBy('created_at','desc')->get();
   }
 
   public function get_not_assign_sortedup()
@@ -650,7 +642,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -698,7 +689,7 @@ class PengaduanController extends Controller
       }
     } while ($swapped);
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_petugas')->whereNotNull('id_admin')->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_petugas')->whereNotNull('id_admin')->orderBy('created_at','desc')->get();
   }
 
   public function get_not_assign_sorteddown()
@@ -716,7 +707,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -764,7 +754,7 @@ class PengaduanController extends Controller
       }
     } while ($swapped);
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_petugas')->whereNotNull('id_admin')->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_petugas')->whereNotNull('id_admin')->orderBy('created_at','desc')->get();
   }
 
   public function get_not_verified()
@@ -782,7 +772,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -820,7 +809,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_admin')->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->whereNull('id_admin')->orderBy('created_at','desc')->get();
   }
 
   public function get_by_tipe($tipe)
@@ -838,7 +827,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -876,7 +864,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('tipe_pengaduan',$tipe)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('tipe_pengaduan',$tipe)->orderBy('created_at','desc')->get();
   }
 
   public function get_by_status($status)
@@ -894,7 +882,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -932,7 +919,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->orderBy('created_at','desc')->get();
   }
 
   public function get_by_status_sortedup($status)
@@ -950,7 +937,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -998,7 +984,7 @@ class PengaduanController extends Controller
       }
     } while ($swapped);
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->orderBy('created_at','desc')->get();
   }
 
   public function get_by_status_sorteddown($status)
@@ -1016,7 +1002,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -1064,7 +1049,7 @@ class PengaduanController extends Controller
       }
     } while ($swapped);
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->orderBy('created_at','desc')->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->orderBy('created_at','desc')->get();
   }
 
   public function get_by_tipe_n_status($tipe, $status)
@@ -1082,7 +1067,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -1120,7 +1104,7 @@ class PengaduanController extends Controller
       }
     }
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->where('tipe_pengaduan',$tipe)->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->where('tipe_pengaduan',$tipe)->get();
   }
 
   public function get_by_tipe_n_status_sortedup($tipe, $status)
@@ -1138,7 +1122,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -1188,7 +1171,7 @@ class PengaduanController extends Controller
     } while ($swapped);
 
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->where('tipe_pengaduan',$tipe)->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->where('tipe_pengaduan',$tipe)->get();
   }
 
   public function get_by_tipe_n_status_sorteddown($tipe, $status)
@@ -1206,7 +1189,6 @@ class PengaduanController extends Controller
       'tipe_pengaduan',
       'deskripsi_pengaduan',
       'status_pengaduan',
-      'laporan_petugas',
       'feedback_masyarakat',
       'created_at',
       'updated_at',
@@ -1256,7 +1238,7 @@ class PengaduanController extends Controller
     } while ($swapped);
 
     return $data;
-    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','laporan_petugas','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->where('tipe_pengaduan',$tipe)->get();
+    // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('status_pengaduan',$status)->where('tipe_pengaduan',$tipe)->get();
   }
 
   public function delete($id)
