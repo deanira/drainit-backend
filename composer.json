@@ -9,14 +9,16 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0.12",
+        "darkaonline/l5-swagger": "^8.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "goldspecdigital/laravel-eloquent-uuid": "^8.0",
+        "illuminate/support": "^8.83.3",
         "laravel/framework": "^8.0",
         "laravel/passport": "^10.3.2",
         "laravel/tinker": "^2.5",
-		"illuminate/support": "^8.83.3",
-		"symfony/console": "^5.0"
+        "laravel/ui": "^3.4",
+        "symfony/console": "^5.0"
     },
     "require-dev": {
         "facade/ignition": "^2.17.5",

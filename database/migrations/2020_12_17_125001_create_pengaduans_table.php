@@ -24,7 +24,6 @@ class CreatePengaduansTable extends Migration
             $table->string('tipe_pengaduan', 20);
             $table->text('deskripsi_pengaduan');
             $table->string('status_pengaduan', 50);
-            $table->text('laporan_petugas')->nullable();
             $table->text('feedback_masyarakat')->nullable();
             $table->timestamps();
         });

@@ -40,13 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
             'hash' => false,
         ],
-
         'api-admin' => [
             'driver' => 'passport',
             'provider' => 'admins',
@@ -57,7 +55,6 @@ return [
             'provider' => 'petugas',
             'hash' => false,
         ],
-
         'api-masyarakat' => [
             'driver' => 'passport',
             'provider' => 'masyarakats',
@@ -98,7 +95,7 @@ return [
             'model' => App\Petugas::class,
         ],
 
-        'masyarakats' =>[
+        'masyarakats' => [
             'driver' => 'eloquent',
             'model' => App\Masyarakat::class,
         ]
