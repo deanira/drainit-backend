@@ -55,6 +55,5 @@ Route::prefix('votes')->group(function () {
 
 Route::prefix('update_pengaduan')->group(function () {
     Route::put('/admin/{id}', 'PengaduanController@updateAdmin')->middleware('auth:api-admin')->name('update_pengaduan.admin');
-    Route::put('/petugas/{id}', 'PengaduanController@updatePetugas')->middleware('auth:api-petugas')->name('update_pengaduan.petugas');
     Route::put('/masyarakat/{id}', 'PengaduanController@feedbackMasyarakat')->middleware('auth:api-masyarakat')->name('feedback_pengaduan.masyarakat');
 });

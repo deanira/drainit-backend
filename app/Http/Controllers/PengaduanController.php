@@ -293,28 +293,6 @@ class PengaduanController extends Controller
     return response()->json(["message" => "Admin, Update Successfully!", "data" => $data, "status_code" => 200], 200);
   }
 
-  public function updatePetugas(request $request, $id)
-  {
-    $validator = Validator::make($request->all(), [
-      'status_pengaduan' => 'nullable',
-      'laporan_petugas' => 'nullable',
-    ]);
-    if ($validator->fails()) {
-      return response(['errors' => $validator->errors()->all()], 422);
-    }
-    $data = Pengaduan::select('id', 'id_masyarakat', 'id_admin', 'id_petugas', 'nama_jalan', 'foto', 'tipe_pengaduan', 'deskripsi_pengaduan', 'status_pengaduan', 'feedback_masyarakat', DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id', $id)->first();
-    $data->id_petugas = auth()->user()->id;
-    if (is_null($request->status_pengaduan)) {
-      $data->status_pengaduan = "Proses Petugas";
-    } else {
-      $data->status_pengaduan = $request->status_pengaduan;
-    }
-    $data->laporan_petugas = $request->laporan_petugas;
-    $data->save();
-
-    return response()->json(["message" => "Petugas, Update Successfully!", "data" => $data, "status_code" => 200], 200);
-  }
-
   public function feedbackMasyarakat(request $request, $id)
   {
     $idMasyarakat = auth()->user()->id;
