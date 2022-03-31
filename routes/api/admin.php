@@ -15,3 +15,7 @@ Route::middleware('auth:api-admin')->prefix('admin')->group(function () {
     Route::put('/', 'AdminController@update')->name('update.admin');
     Route::delete('/{id}', 'AdminController@delete')->name('delete.admin');
 });
+
+Route::prefix('change_password')->group(function () {
+    Route::put('/admin', 'AdminController@reset_password')->name('reset_password.admin')->middleware('auth:api-admin');
+});

@@ -20,3 +20,7 @@ Route::prefix('petugas')->group(function () {
         Route::delete('/{id}', 'PetugasController@delete')->name('delete.petugas');
     });
 });
+
+Route::prefix('change_password')->group(function () {
+    Route::put('/petugas', 'PetugasController@reset_password')->name('reset_password.petugas')->middleware('auth:api-petugas');
+});

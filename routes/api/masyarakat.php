@@ -19,3 +19,7 @@ Route::prefix('masyarakat')->group(function () {
         Route::delete('/{id}', 'MasyarakatController@delete')->name('delete.masyarakat');
     });
 });
+
+Route::prefix('change_password')->group(function () {
+    Route::put('/masyarakat', 'MasyarakatController@reset_password')->name('reset_password.masyarakat')->middleware('auth:api-masyarakat');
+});
