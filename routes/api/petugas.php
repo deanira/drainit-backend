@@ -1,8 +1,5 @@
 <?php
 
-use App\PembaruanPengaduan;
-use Illuminate\Http\Request;
-
 Route::prefix('login')->group(function () {
     Route::post('petugas', 'PetugasController@login')->name('login.petugas');
 });
