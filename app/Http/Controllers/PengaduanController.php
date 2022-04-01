@@ -218,12 +218,16 @@ class PengaduanController extends Controller
       'deskripsi_pengaduan' => 'required',
       'geometry' => 'required|JSON'
     ]);
-    $validator['id_masyarakat'] = auth()->user()->id;
-    $validator['status_pengaduan'] = "NOT_YET_VERIFIED";
-    $validator['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request->geometry . "')");
+    if ($validator->fails()) {
+      return response(['errors' => $validator->errors()->all()], 422);
+    }
+    $request['id_masyarakat'] = auth()->user()->id;
+    $request['status_pengaduan'] = "NOT_YET_VERIFIED";
+    $geometry = $request['geometry'];
+    $request['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request['geometry'] . "')");
 
     if (is_null($request->foto)) {
-      $validator['foto'] = 'defaultpengaduan.png';
+      $request['foto'] = 'defaultpengaduan.png';
     } else {
       $fileUploadHelper = new CustomHelpper();
 
@@ -234,11 +238,10 @@ class PengaduanController extends Controller
       $file = uniqid() . '.' . $extension;
       $file_dir = storage_path('app/public/images/') . $file;
       file_put_contents($file_dir, $decoded);
-      $validator['foto'] = $file;
+      $request['foto'] = $file;
     }
-
-    $data = Pengaduan::create($validator);
-    $data->geometry = json_decode($request->geometry);
+    $data = Pengaduan::create($request->toArray());
+    $data->geometry = $geometry;
 
     return response()->json(["message" => "Added Successfully!", "data" => $data, "status_code" => 201], 201);
   }
@@ -252,11 +255,15 @@ class PengaduanController extends Controller
       'deskripsi_pengaduan' => 'required',
       'geometry' => 'required|JSON'
     ]);
-    $validator['status_pengaduan'] = "NOT_YET_VERIFIED";
-    $validator['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request->geometry . "')");
+    if ($validator->fails()) {
+      return response(['errors' => $validator->errors()->all()], 422);
+    }
+    $request['status_pengaduan'] = "NOT_YET_VERIFIED";
+    $geometry = $request['geometry'];
+    $request['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request['geometry'] . "')");
 
     if (is_null($request->foto)) {
-      $validator['foto'] = 'defaultpengaduan.png';
+      $request['foto'] = 'defaultpengaduan.png';
     } else {
       $fileUploadHelper = new CustomHelpper();
 
@@ -267,11 +274,11 @@ class PengaduanController extends Controller
       $file = uniqid() . '.' . $extension;
       $file_dir = storage_path('app/public/images/') . $file;
       file_put_contents($file_dir, $decoded);
-      $validator['foto'] = $file;
+      $request['foto'] = $file;
     }
 
-    $data = Pengaduan::create($validator);
-    $data->geometry = json_decode($request->geometry);
+    $data = Pengaduan::create($request->toArray());
+    $data->geometry = $geometry;
 
     return response()->json(["message" => "Added Successfully!", "data" => $data, "status_code" => 201], 201);
   }
