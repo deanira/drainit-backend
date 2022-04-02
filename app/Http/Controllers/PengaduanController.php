@@ -209,12 +209,11 @@ class PengaduanController extends Controller
     // return Pengaduan::select('id','id_masyarakat','id_admin','id_petugas','nama_jalan','foto','tipe_pengaduan','deskripsi_pengaduan','status_pengaduan','feedback_masyarakat',DB::Raw('ST_AsGeoJSON(geometry) as geometry'))->where('id_petugas',$id)->orderBy('created_at','desc')->get();
   }
 
-  public function create(request $request)
+  public function createBanjir(request $request)
   {
     $validator = Validator::make($request->all(), [
       'nama_jalan' => 'required',
       'foto' => 'nullable',
-      'tipe_pengaduan' => 'required',
       'deskripsi_pengaduan' => 'required',
       'geometry' => 'required|JSON'
     ]);
@@ -222,6 +221,7 @@ class PengaduanController extends Controller
       return response(['errors' => $validator->errors()->all()], 422);
     }
     $request['id_masyarakat'] = auth()->user()->id;
+    $request['tipe_pengaduan'] = "Banjir";
     $request['status_pengaduan'] = "NOT_YET_VERIFIED";
     $geometry = $request['geometry'];
     $request['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request['geometry'] . "')");
@@ -246,12 +246,48 @@ class PengaduanController extends Controller
     return response()->json(["message" => "Added Successfully!", "data" => $data, "status_code" => 201], 201);
   }
 
-  public function anonim(request $request)
+  public function createDrainaseRusak(request $request)
   {
     $validator = Validator::make($request->all(), [
       'nama_jalan' => 'required',
       'foto' => 'nullable',
-      'tipe_pengaduan' => 'required',
+      'deskripsi_pengaduan' => 'required',
+      'geometry' => 'required|JSON'
+    ]);
+    if ($validator->fails()) {
+      return response(['errors' => $validator->errors()->all()], 422);
+    }
+    $request['id_masyarakat'] = auth()->user()->id;
+    $request['tipe_pengaduan'] = "Drainase Rusak";
+    $request['status_pengaduan'] = "NOT_YET_VERIFIED";
+    $geometry = $request['geometry'];
+    $request['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request['geometry'] . "')");
+
+    if (is_null($request->foto)) {
+      $request['foto'] = 'defaultpengaduan.png';
+    } else {
+      $fileUploadHelper = new CustomHelpper();
+
+      $encoded_img = $request->foto;
+      $decoded = base64_decode($encoded_img);
+      $mime_type = finfo_buffer(finfo_open(), $decoded, FILEINFO_MIME_TYPE);
+      $extension = $fileUploadHelper->mime2ext($mime_type);
+      $file = uniqid() . '.' . $extension;
+      $file_dir = storage_path('app/public/images/') . $file;
+      file_put_contents($file_dir, $decoded);
+      $request['foto'] = $file;
+    }
+    $data = Pengaduan::create($request->toArray());
+    $data->geometry = $geometry;
+
+    return response()->json(["message" => "Added Successfully!", "data" => $data, "status_code" => 201], 201);
+  }
+
+  public function anonimBanjir(request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'nama_jalan' => 'required',
+      'foto' => 'nullable',
       'deskripsi_pengaduan' => 'required',
       'geometry' => 'required|JSON'
     ]);
@@ -259,6 +295,44 @@ class PengaduanController extends Controller
       return response(['errors' => $validator->errors()->all()], 422);
     }
     $request['status_pengaduan'] = "NOT_YET_VERIFIED";
+    $request['tipe_pengaduan'] = "Banjir";
+    $geometry = $request['geometry'];
+    $request['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request['geometry'] . "')");
+
+    if (is_null($request->foto)) {
+      $request['foto'] = 'defaultpengaduan.png';
+    } else {
+      $fileUploadHelper = new CustomHelpper();
+
+      $encoded_img = $request->foto;
+      $decoded = base64_decode($encoded_img);
+      $mime_type = finfo_buffer(finfo_open(), $decoded, FILEINFO_MIME_TYPE);
+      $extension = $fileUploadHelper->mime2ext($mime_type);
+      $file = uniqid() . '.' . $extension;
+      $file_dir = storage_path('app/public/images/') . $file;
+      file_put_contents($file_dir, $decoded);
+      $request['foto'] = $file;
+    }
+
+    $data = Pengaduan::create($request->toArray());
+    $data->geometry = $geometry;
+
+    return response()->json(["message" => "Added Successfully!", "data" => $data, "status_code" => 201], 201);
+  }
+
+  public function anonimDrainaseRusak(request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'nama_jalan' => 'required',
+      'foto' => 'nullable',
+      'deskripsi_pengaduan' => 'required',
+      'geometry' => 'required|JSON'
+    ]);
+    if ($validator->fails()) {
+      return response(['errors' => $validator->errors()->all()], 422);
+    }
+    $request['status_pengaduan'] = "NOT_YET_VERIFIED";
+    $request['tipe_pengaduan'] = "Drainase Rusak";
     $geometry = $request['geometry'];
     $request['geometry'] = DB::Raw("ST_GeomFromGeoJSON('" . $request['geometry'] . "')");
 

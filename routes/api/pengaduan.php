@@ -3,10 +3,15 @@
 Route::prefix('pengaduan')->group(function () {
     Route::get('/', 'PengaduanController@index')->name('get.pengaduan');
     Route::get('/{id}', 'PengaduanController@show')->name('get_by_id.pengaduan');
-    Route::post('/anonim', 'PengaduanController@anonim')->name('create_anonim.pengaduan');
+
+    Route::prefix('/anonim')->group(function () {
+        Route::post('/banjir', 'PengaduanController@anonimBanjir')->name('create_banjir_anonim.pengaduan');
+        Route::post('/drainase_rusak', 'PengaduanController@anonimDrainaseRusak')->name('create_drainase_rusak_anonim.pengaduan');
+    });
 
     Route::middleware('auth:api-masyarakat')->group(function () {
-        Route::post('/', 'PengaduanController@create')->name('create.pengaduan');
+        Route::post('/banjir', 'PengaduanController@createBanjir')->name('create_banjir.pengaduan');
+        Route::post('/drainase_rusak', 'PengaduanController@createDrainaseRusak')->name('create_drainase_rusak.pengaduan');
     });
 
     Route::middleware('auth:api-admin')->group(function () {
